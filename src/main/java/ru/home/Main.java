@@ -3,16 +3,12 @@ package ru.home;
 import ru.home.model.Book;
 import ru.home.model.Car;
 import ru.home.model.RootVegetable;
-import ru.home.service.FileService;
-import ru.home.service.ManualService;
-import ru.home.service.RandomService;
-import ru.home.service.SortService;
+import ru.home.service.*;
 import ru.home.service.impl.FileServiceImpl;
 import ru.home.service.impl.ManualServiceImpl;
 import ru.home.service.impl.MergeSortServiceImpl;
 import ru.home.service.impl.RandomServiceImpl;
 import ru.home.storage.Storage;
-import ru.home.util.BinarySearch;
 import ru.home.util.CustomArrayList;
 
 import java.util.Scanner;
@@ -27,6 +23,9 @@ public class Main {
         SortService<Car> carSortService = new MergeSortServiceImpl<>();
         SortService<Book> bookSortService = new MergeSortServiceImpl<>();
         SortService<RootVegetable> rootVegetableSortService = new MergeSortServiceImpl<>();
+        SearchService<Car> carSearchService = new BinarySearchService<>();
+        SearchService<Book> bookSearchService = new BinarySearchService<>();
+        SearchService<RootVegetable> rootVegetableSearchService = new BinarySearchService<>();
 
         Storage<Car> carStorage = new CustomArrayList<>();
         Storage<Book> bookStorage = new CustomArrayList<>();
@@ -45,13 +44,13 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    handleCarMenu(scanner, fileService, randomService, manualService, carSortService, carStorage);
+                    handleCarMenu(scanner, fileService, randomService, manualService, carSortService, carStorage, carSearchService);
                     break;
                 case 2:
-                    handleBookMenu(scanner, fileService, randomService, manualService, bookSortService, bookStorage);
+                    handleBookMenu(scanner, fileService, randomService, manualService, bookSortService, bookStorage, bookSearchService);
                     break;
                 case 3:
-                    handleRootVegetableMenu(scanner, fileService, randomService, manualService, rootVegetableSortService, rootVegetableStorage);
+                    handleRootVegetableMenu(scanner, fileService, randomService, manualService, rootVegetableSortService, rootVegetableStorage, rootVegetableSearchService);
                     break;
                 case 4:
                     System.out.println("Выход из программы. До свидания!");
@@ -62,7 +61,7 @@ public class Main {
         }
     }
 
-    private static void handleCarMenu(Scanner scanner, FileService fileService, RandomService randomService, ManualService manualService, SortService<Car> sortService, Storage<Car> carStorage) {
+    private static void handleCarMenu(Scanner scanner, FileService fileService, RandomService randomService, ManualService manualService, SortService<Car> sortService, Storage<Car> carStorage, SearchService<Car> carSearchService) {
         while (true) {
             System.out.println("Выберите действие для автомобилей:");
             System.out.println("1. Заполнить массив из файла");
@@ -91,6 +90,7 @@ public class Main {
                     cars = randomService.fillRandomCars(size);
                     for (Car car : cars) {
                         carStorage.add(car);
+                        System.out.println("Добавлен автомобиль: " + car.getModel()); // Вывод в консоль
                     }
                     break;
                 case 3:
@@ -113,7 +113,7 @@ public class Main {
                         // Сортировка перед поиском
                         sortService.sort(carsArray, new Car.CarComparator());
 
-                        int index = BinarySearch.search(carsArray, new Car.Builder().setModel(model).build(), new Car.CarComparator());
+                        int index = carSearchService.search(carsArray, new Car.Builder().setModel(model).build(), new Car.CarComparator());
                         if (index != -1) {
                             System.out.println("Автомобиль найден на позиции: " + index);
                         } else {
@@ -131,7 +131,7 @@ public class Main {
         }
     }
 
-    private static void handleBookMenu(Scanner scanner, FileService fileService, RandomService randomService, ManualService manualService, SortService<Book> sortService, Storage<Book> bookStorage) {
+    private static void handleBookMenu(Scanner scanner, FileService fileService, RandomService randomService, ManualService manualService, SortService<Book> sortService, Storage<Book> bookStorage, SearchService<Book> bookSearchService) {
         while (true) {
             System.out.println("Выберите действие для книг:");
             System.out.println("1. Заполнить массив из файла");
@@ -160,6 +160,7 @@ public class Main {
                     books = randomService.fillRandomBooks(size);
                     for (Book book : books) {
                         bookStorage.add(book);
+                        System.out.println("Добавлена книга: " + book.getTitle()); // Вывод в консоль
                     }
                     break;
                 case 3:
@@ -182,7 +183,7 @@ public class Main {
                         // Сортировка перед поиском
                         sortService.sort(booksArray, new Book.BookComparator());
 
-                        int index = BinarySearch.search(booksArray, new Book.Builder().setTitle(title).build(), new Book.BookComparator());
+                        int index = bookSearchService.search(booksArray, new Book.Builder().setTitle(title).build(), new Book.BookComparator());
                         if (index != -1) {
                             System.out.println("Книга найдена на позиции: " + index);
                         } else {
@@ -200,7 +201,7 @@ public class Main {
         }
     }
 
-    private static void handleRootVegetableMenu(Scanner scanner, FileService fileService, RandomService randomService, ManualService manualService, SortService<RootVegetable> sortService, Storage<RootVegetable> rootVegetableStorage) {
+    private static void handleRootVegetableMenu(Scanner scanner, FileService fileService, RandomService randomService, ManualService manualService, SortService<RootVegetable> sortService, Storage<RootVegetable> rootVegetableStorage, SearchService<RootVegetable> rootVegetableSearchService) {
         while (true) {
             System.out.println("Выберите действие для корнеплодов:");
             System.out.println("1. Заполнить массив из файла");
@@ -229,6 +230,7 @@ public class Main {
                     rootVegetables = randomService.fillRandomRootVegetables(size);
                     for (RootVegetable rootVegetable : rootVegetables) {
                         rootVegetableStorage.add(rootVegetable);
+                        System.out.println("Добавлен корнеплод: " + rootVegetable.getType()); // Вывод в консоль
                     }
                     break;
                 case 3:
@@ -251,7 +253,7 @@ public class Main {
                         // Сортировка перед поиском
                         sortService.sort(rootVegetablesArray, new RootVegetable.RootVegetableComparator());
 
-                        int index = BinarySearch.search(rootVegetablesArray, new RootVegetable.Builder().setType(type).build(), new RootVegetable.RootVegetableComparator());
+                        int index = rootVegetableSearchService.search(rootVegetablesArray, new RootVegetable.Builder().setType(type).build(), new RootVegetable.RootVegetableComparator());
                         if (index != -1) {
                             System.out.println("Корнеплод найден на позиции: " + index);
                         } else {

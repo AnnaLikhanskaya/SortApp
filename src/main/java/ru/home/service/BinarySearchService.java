@@ -1,9 +1,10 @@
-package ru.home.util;
+package ru.home.service;
 
 import java.util.Comparator;
 
-public class BinarySearch {
-    public static <T> int search(T[] array, T key, Comparator<? super T> comparator) {
+public class BinarySearchService<T> implements SearchService<T> {
+    @Override
+    public int search(T[] array, T key, Comparator<? super T> comparator) {
         int low = 0;
         int high = array.length - 1;
 
@@ -19,6 +20,6 @@ public class BinarySearch {
                 low = mid + 1;
             }
         }
-        return -1;
+        return -1; // Key not found
     }
 }
