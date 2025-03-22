@@ -5,9 +5,19 @@ import ru.home.model.RootVegetable;
 public class RootVegetableValidator {
 
     public static boolean isValid(RootVegetable rootVegetable) {
-        return isValidType(rootVegetable.getType()) &&
-                isValidWeight(rootVegetable.getWeight()) &&
-                isValidColor(rootVegetable.getColor());
+        if (!isValidType(rootVegetable.getType())) {
+            System.out.println("Ошибка: Некорректный тип корнеплода. Тип не должен быть пустым.");
+            return false;
+        }
+        if (!isValidWeight(rootVegetable.getWeight())) {
+            System.out.println("Ошибка: Некорректный вес корнеплода. Вес должен быть больше 0.");
+            return false;
+        }
+        if (!isValidColor(rootVegetable.getColor())) {
+            System.out.println("Ошибка: Некорректный цвет корнеплода. Цвет не должен быть пустым.");
+            return false;
+        }
+        return true;
     }
 
     private static boolean isValidType(String type) {

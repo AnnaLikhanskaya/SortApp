@@ -13,7 +13,11 @@ import ru.home.service.impl.MergeSortServiceImpl;
 import ru.home.service.impl.RandomServiceImpl;
 import ru.home.storage.Storage;
 import ru.home.util.CustomArrayList;
+import ru.home.validator.BookValidator;
+import ru.home.validator.CarValidator;
+import ru.home.validator.RootVegetableValidator;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -78,55 +82,84 @@ public class Main {
             System.out.println("4. Бинарный поиск");
             System.out.println("5. Вернуться в главное меню");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = 0;
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine(); // Считываем оставшийся символ новой строки
+            } catch (InputMismatchException e) {
+                System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
+                scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                continue;
+            }
 
             switch (choice) {
                 case 1:
-                    // Заполнение из файла
                     System.out.println("Идет заполнение массива автомобилей из файла...");
                     Car[] cars = fileService.fillFromFileForCars("cars.txt");
                     for (Car car : cars) {
-                        carStorage.add(car);
-                        System.out.println("Добавлен автомобиль: " + car.getModel()); // Вывод в консоль
+                        if (CarValidator.isValid(car)) {
+                            carStorage.add(car);
+                            System.out.println("Добавлен автомобиль: " + car.getModel());
+                        } else {
+                            System.out.println("Некорректные данные автомобиля. Пожалуйста, исправьте данные и попробуйте снова.");
+                            return;
+                        }
                     }
                     System.out.println("Данные из файла успешно загружены.");
                     break;
                 case 2:
-                    // Заполнение случайными данными
                     System.out.println("Идет заполнение массива автомобилей случайными данными...");
                     System.out.print("Введите количество автомобилей: ");
-                    int size = scanner.nextInt();
-                    scanner.nextLine();
+                    int size = 0;
+                    try {
+                        size = scanner.nextInt();
+                        scanner.nextLine();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
+                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        continue;
+                    }
                     cars = randomService.fillRandomCars(size);
                     for (Car car : cars) {
-                        carStorage.add(car);
-                        System.out.println("Добавлен автомобиль: " + car.getModel()); // Вывод в консоль
+                        if (CarValidator.isValid(car)) {
+                            carStorage.add(car);
+                            System.out.println("Добавлен автомобиль: " + car.getModel());
+                        } else {
+                            System.out.println("Некорректные данные автомобиля. Пожалуйста, исправьте данные и попробуйте снова.");
+                            return;
+                        }
                     }
                     break;
                 case 3:
-                    // Заполнение вручную
                     System.out.println("Идет заполнение массива автомобилей вручную...");
                     System.out.print("Введите количество автомобилей: ");
-                    size = scanner.nextInt();
-                    scanner.nextLine();
+                    try {
+                        size = scanner.nextInt();
+                        scanner.nextLine();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
+                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        continue;
+                    }
                     cars = manualService.fillManuallyCars(scanner, size);
                     for (Car car : cars) {
-                        carStorage.add(car);
+                        if (CarValidator.isValid(car)) {
+                            carStorage.add(car);
+                        } else {
+                            System.out.println("Некорректные данные автомобиля. Пожалуйста, исправьте данные и попробуйте снова.");
+                            return;
+                        }
                     }
                     break;
                 case 4:
-                    // Бинарный поиск по модели
                     if (carStorage.getAll().size() > 0) {
                         System.out.println("Идет выполнение бинарного поиска в массиве автомобилей...");
                         System.out.print("Введите модель автомобиля для поиска: ");
                         String model = scanner.nextLine();
                         Car[] carsArray = carStorage.getAll().toArray(new Car[0]);
 
-                        // Сортировка перед поиском
                         sortService.sort(carsArray, new CarModelComparator());
 
-                        // Создайте временный объект Car только с моделью для поиска
                         Car searchKey = new Car.Builder().setModel(model).setPower(100).setYear(2000).build();
 
                         int index = carSearchService.search(carsArray, searchKey, new CarModelComparator());
@@ -153,55 +186,102 @@ public class Main {
             System.out.println("1. Заполнить массив из файла");
             System.out.println("2. Заполнить массив случайными данными");
             System.out.println("3. Заполнить массив вручную");
-            System.out.println("4. Бинарный поиск");
-            System.out.println("5. Вернуться в главное меню");
+            System.out.println("4. Бинарный поиск по названию");
+            System.out.println("5. Сортировка по названию, автору и количеству страниц");
+            System.out.println("6. Сортировка по автору");
+            System.out.println("7. Сортировка по количеству страниц");
+            System.out.println("8. Вернуться в главное меню");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = 0;
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine(); // Считываем оставшийся символ новой строки
+            } catch (InputMismatchException e) {
+                System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
+                scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                continue;
+            }
 
             switch (choice) {
                 case 1:
                     System.out.println("Идет заполнение массива книг из файла...");
                     Book[] books = fileService.fillFromFileForBooks("books.txt");
                     for (Book book : books) {
-                        bookStorage.add(book);
-                        System.out.println("Добавлена книга: " + book.getTitle()); // Вывод в консоль
+                        if (BookValidator.isValid(book)) {
+                            bookStorage.add(book);
+                            System.out.println("Добавлена книга: " + book.getTitle());
+                        } else {
+                            System.out.println("Некорректные данные книги. Пожалуйста, исправьте данные и попробуйте снова.");
+                            return;
+                        }
                     }
                     System.out.println("Данные из файла успешно загружены.");
                     break;
                 case 2:
                     System.out.println("Идет заполнение массива книг случайными данными...");
                     System.out.print("Введите количество книг: ");
-                    int size = scanner.nextInt();
-                    scanner.nextLine();
+                    int size = 0;
+                    try {
+                        size = scanner.nextInt();
+                        scanner.nextLine();
+                        if (size <= 0) {
+                            throw new IllegalArgumentException("Количество книг должно быть больше 0.");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
+                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        continue;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Ошибка: " + e.getMessage());
+                        continue;
+                    }
                     books = randomService.fillRandomBooks(size);
                     for (Book book : books) {
-                        bookStorage.add(book);
-                        System.out.println("Добавлена книга: " + book.getTitle()); // Вывод в консоль
+                        if (BookValidator.isValid(book)) {
+                            bookStorage.add(book);
+                            System.out.println("Добавлена книга: " + book.getTitle());
+                        } else {
+                            System.out.println("Некорректные данные книги. Пожалуйста, исправьте данные и попробуйте снова.");
+                            return;
+                        }
                     }
                     break;
                 case 3:
                     System.out.println("Идет заполнение массива книг вручную...");
                     System.out.print("Введите количество книг: ");
-                    size = scanner.nextInt();
-                    scanner.nextLine();
+                    try {
+                        size = scanner.nextInt();
+                        scanner.nextLine();
+                        if (size <= 0) {
+                            throw new IllegalArgumentException("Количество книг должно быть больше 0.");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
+                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        continue;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Ошибка: " + e.getMessage());
+                        continue;
+                    }
                     books = manualService.fillManuallyBooks(scanner, size);
                     for (Book book : books) {
-                        bookStorage.add(book);
+                        if (BookValidator.isValid(book)) {
+                            bookStorage.add(book);
+                        } else {
+                            System.out.println("Некорректные данные книги. Пожалуйста, исправьте данные и попробуйте снова.");
+                            return;
+                        }
                     }
                     break;
                 case 4:
-                    // Бинарный поиск по названию
                     if (bookStorage.getAll().size() > 0) {
                         System.out.println("Идет выполнение бинарного поиска в массиве книг...");
                         System.out.print("Введите название книги для поиска: ");
                         String title = scanner.nextLine();
                         Book[] booksArray = bookStorage.getAll().toArray(new Book[0]);
 
-                        // Сортировка перед поиском
                         sortService.sort(booksArray, new BookTitleComparator());
 
-                        // Создайте временный объект Book только с названием для поиска
                         Book searchKey = new Book.Builder().setTitle(title).setAuthor("Unknown").setPages(1).build();
 
                         int index = bookSearchService.search(booksArray, searchKey, new BookTitleComparator());
@@ -228,55 +308,98 @@ public class Main {
             System.out.println("1. Заполнить массив из файла");
             System.out.println("2. Заполнить массив случайными данными");
             System.out.println("3. Заполнить массив вручную");
-            System.out.println("4. Бинарный поиск");
-            System.out.println("5. Вернуться в главное меню");
+            System.out.println("4. Бинарный поиск по типу");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = 0;
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine(); // Считываем оставшийся символ новой строки
+            } catch (InputMismatchException e) {
+                System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
+                scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                continue;
+            }
 
             switch (choice) {
                 case 1:
                     System.out.println("Идет заполнение массива корнеплодов из файла...");
                     RootVegetable[] rootVegetables = fileService.fillFromFileForRootVegetables("root_vegetables.txt");
                     for (RootVegetable rootVegetable : rootVegetables) {
-                        rootVegetableStorage.add(rootVegetable);
-                        System.out.println("Добавлен корнеплод: " + rootVegetable.getType()); // Вывод в консоль
+                        if (RootVegetableValidator.isValid(rootVegetable)) {
+                            rootVegetableStorage.add(rootVegetable);
+                            System.out.println("Добавлен корнеплод: " + rootVegetable.getType());
+                        } else {
+                            System.out.println("Некорректные данные корнеплода. Пожалуйста, исправьте данные и попробуйте снова.");
+                            return;
+                        }
                     }
                     System.out.println("Данные из файла успешно загружены.");
                     break;
                 case 2:
                     System.out.println("Идет заполнение массива корнеплодов случайными данными...");
                     System.out.print("Введите количество корнеплодов: ");
-                    int size = scanner.nextInt();
-                    scanner.nextLine();
+                    int size = 0;
+                    try {
+                        size = scanner.nextInt();
+                        scanner.nextLine();
+                        if (size <= 0) {
+                            throw new IllegalArgumentException("Количество корнеплодов должно быть больше 0.");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
+                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        continue;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Ошибка: " + e.getMessage());
+                        continue;
+                    }
                     rootVegetables = randomService.fillRandomRootVegetables(size);
                     for (RootVegetable rootVegetable : rootVegetables) {
-                        rootVegetableStorage.add(rootVegetable);
-                        System.out.println("Добавлен корнеплод: " + rootVegetable.getType()); // Вывод в консоль
+                        if (RootVegetableValidator.isValid(rootVegetable)) {
+                            rootVegetableStorage.add(rootVegetable);
+                            System.out.println("Добавлен корнеплод: " + rootVegetable.getType());
+                        } else {
+                            System.out.println("Некорректные данные корнеплода. Пожалуйста, исправьте данные и попробуйте снова.");
+                            return;
+                        }
                     }
                     break;
                 case 3:
                     System.out.println("Идет заполнение массива корнеплодов вручную...");
                     System.out.print("Введите количество корнеплодов: ");
-                    size = scanner.nextInt();
-                    scanner.nextLine();
+                    try {
+                        size = scanner.nextInt();
+                        scanner.nextLine();
+                        if (size <= 0) {
+                            throw new IllegalArgumentException("Количество корнеплодов должно быть больше 0.");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
+                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        continue;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Ошибка: " + e.getMessage());
+                        continue;
+                    }
                     rootVegetables = manualService.fillManuallyRootVegetables(scanner, size);
                     for (RootVegetable rootVegetable : rootVegetables) {
-                        rootVegetableStorage.add(rootVegetable);
+                        if (RootVegetableValidator.isValid(rootVegetable)) {
+                            rootVegetableStorage.add(rootVegetable);
+                        } else {
+                            System.out.println("Некорректные данные корнеплода. Пожалуйста, исправьте данные и попробуйте снова.");
+                            return;
+                        }
                     }
                     break;
                 case 4:
-                    // Бинарный поиск по типу
                     if (rootVegetableStorage.getAll().size() > 0) {
                         System.out.println("Идет выполнение бинарного поиска в массиве корнеплодов...");
                         System.out.print("Введите тип корнеплода для поиска: ");
                         String type = scanner.nextLine();
                         RootVegetable[] rootVegetablesArray = rootVegetableStorage.getAll().toArray(new RootVegetable[0]);
 
-                        // Сортировка перед поиском
                         sortService.sort(rootVegetablesArray, new RootVegetableTypeComparator());
 
-                        // Создайте временный объект RootVegetable только с типом для поиска
                         RootVegetable searchKey = new RootVegetable.Builder().setType(type).setWeight(0.1).setColor("Unknown").build();
 
                         int index = rootVegetableSearchService.search(rootVegetablesArray, searchKey, new RootVegetableTypeComparator());
