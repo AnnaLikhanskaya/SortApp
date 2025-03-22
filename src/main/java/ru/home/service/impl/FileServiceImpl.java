@@ -26,7 +26,7 @@ public class FileServiceImpl implements FileService {
                     int year = Integer.parseInt(values[2].trim());
                     Car car = new Car.Builder().setPower(power).setModel(model).setYear(year).build();
                     cars.add(car);
-                    System.out.println("Добавлен автомобиль: " + car.getModel()); // Отладочное сообщение
+                    System.out.println("Добавлен автомобиль: " + car.getModel());
                 }
             }
         } catch (FileNotFoundException e) {
@@ -51,7 +51,7 @@ public class FileServiceImpl implements FileService {
                     int pages = Integer.parseInt(values[2].trim());
                     Book book = new Book.Builder().setAuthor(author).setTitle(title).setPages(pages).build();
                     books.add(book);
-                    System.out.println("Добавлена книга: " + book.getTitle()); // Отладочное сообщение
+                    System.out.println("Добавлена книга: " + book.getTitle());
                 }
             }
         } catch (FileNotFoundException e) {
@@ -75,7 +75,7 @@ public class FileServiceImpl implements FileService {
                     String color = values[2].trim();
                     RootVegetable rootVegetable = new RootVegetable.Builder().setType(type).setWeight(weight).setColor(color).build();
                     rootVegetables.add(rootVegetable);
-                    System.out.println("Добавлен корнеплод: " + rootVegetable.getType()); // Отладочное сообщение
+                    System.out.println("Добавлен корнеплод: " + rootVegetable.getType());
                 }
             }
         } catch (FileNotFoundException e) {
