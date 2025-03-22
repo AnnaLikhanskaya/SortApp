@@ -20,6 +20,6 @@ public class BinarySearchService<T> implements SearchService<T> {
                 low = mid + 1;
             }
         }
-        return -1; // Key not found
+        return -1;
     }
 }

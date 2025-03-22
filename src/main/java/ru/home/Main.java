@@ -2,7 +2,10 @@ package ru.home;
 
 import ru.home.model.Book;
 import ru.home.model.Car;
+import ru.home.model.comparator.BookTitleComparator;
+import ru.home.model.comparator.CarModelComparator;
 import ru.home.model.RootVegetable;
+import ru.home.model.comparator.RootVegetableTypeComparator;
 import ru.home.service.*;
 import ru.home.service.impl.FileServiceImpl;
 import ru.home.service.impl.ManualServiceImpl;
@@ -79,6 +82,7 @@ public class Main {
                     Car[] cars = fileService.fillFromFileForCars("cars.txt");
                     for (Car car : cars) {
                         carStorage.add(car);
+                        System.out.println("Добавлен автомобиль: " + car.getModel()); // Вывод в консоль
                     }
                     System.out.println("Данные из файла успешно загружены.");
                     break;
@@ -111,9 +115,12 @@ public class Main {
                         Car[] carsArray = carStorage.getAll().toArray(new Car[0]);
 
                         // Сортировка перед поиском
-                        sortService.sort(carsArray, new Car.CarComparator());
+                        sortService.sort(carsArray, new CarModelComparator());
 
-                        int index = carSearchService.search(carsArray, new Car.Builder().setModel(model).build(), new Car.CarComparator());
+                        // Создайте временный объект Car только с моделью для поиска
+                        Car searchKey = new Car.Builder().setModel(model).setPower(100).setYear(2000).build();
+
+                        int index = carSearchService.search(carsArray, searchKey, new CarModelComparator());
                         if (index != -1) {
                             System.out.println("Автомобиль найден на позиции: " + index);
                         } else {
@@ -149,6 +156,7 @@ public class Main {
                     Book[] books = fileService.fillFromFileForBooks("books.txt");
                     for (Book book : books) {
                         bookStorage.add(book);
+                        System.out.println("Добавлена книга: " + book.getTitle()); // Вывод в консоль
                     }
                     System.out.println("Данные из файла успешно загружены.");
                     break;
@@ -181,9 +189,12 @@ public class Main {
                         Book[] booksArray = bookStorage.getAll().toArray(new Book[0]);
 
                         // Сортировка перед поиском
-                        sortService.sort(booksArray, new Book.BookComparator());
+                        sortService.sort(booksArray, new BookTitleComparator());
 
-                        int index = bookSearchService.search(booksArray, new Book.Builder().setTitle(title).build(), new Book.BookComparator());
+                        // Создайте временный объект Book только с названием для поиска
+                        Book searchKey = new Book.Builder().setTitle(title).setAuthor("Unknown").setPages(1).build();
+
+                        int index = bookSearchService.search(booksArray, searchKey, new BookTitleComparator());
                         if (index != -1) {
                             System.out.println("Книга найдена на позиции: " + index);
                         } else {
@@ -219,6 +230,7 @@ public class Main {
                     RootVegetable[] rootVegetables = fileService.fillFromFileForRootVegetables("root_vegetables.txt");
                     for (RootVegetable rootVegetable : rootVegetables) {
                         rootVegetableStorage.add(rootVegetable);
+                        System.out.println("Добавлен корнеплод: " + rootVegetable.getType()); // Вывод в консоль
                     }
                     System.out.println("Данные из файла успешно загружены.");
                     break;
@@ -251,9 +263,12 @@ public class Main {
                         RootVegetable[] rootVegetablesArray = rootVegetableStorage.getAll().toArray(new RootVegetable[0]);
 
                         // Сортировка перед поиском
-                        sortService.sort(rootVegetablesArray, new RootVegetable.RootVegetableComparator());
+                        sortService.sort(rootVegetablesArray, new RootVegetableTypeComparator());
 
-                        int index = rootVegetableSearchService.search(rootVegetablesArray, new RootVegetable.Builder().setType(type).build(), new RootVegetable.RootVegetableComparator());
+                        // Создайте временный объект RootVegetable только с типом для поиска
+                        RootVegetable searchKey = new RootVegetable.Builder().setType(type).setWeight(0.1).setColor("Unknown").build();
+
+                        int index = rootVegetableSearchService.search(rootVegetablesArray, searchKey, new RootVegetableTypeComparator());
                         if (index != -1) {
                             System.out.println("Корнеплод найден на позиции: " + index);
                         } else {
