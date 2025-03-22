@@ -85,10 +85,10 @@ public class Main {
             int choice = 0;
             try {
                 choice = scanner.nextInt();
-                scanner.nextLine(); // Считываем оставшийся символ новой строки
+                scanner.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
-                scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                scanner.nextLine();
                 continue;
             }
 
@@ -101,7 +101,8 @@ public class Main {
                             carStorage.add(car);
                             System.out.println("Добавлен автомобиль: " + car.getModel());
                         } else {
-                            System.out.println("Некорректные данные автомобиля. Пожалуйста, исправьте данные и попробуйте снова.");
+                            System.out.println("Некорректные данные автомобиля. " +
+                                    "Пожалуйста, исправьте данные и попробуйте снова.");
                             return;
                         }
                     }
@@ -116,7 +117,7 @@ public class Main {
                         scanner.nextLine();
                     } catch (InputMismatchException e) {
                         System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
-                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        scanner.nextLine();
                         continue;
                     }
                     cars = randomService.fillRandomCars(size);
@@ -125,7 +126,8 @@ public class Main {
                             carStorage.add(car);
                             System.out.println("Добавлен автомобиль: " + car.getModel());
                         } else {
-                            System.out.println("Некорректные данные автомобиля. Пожалуйста, исправьте данные и попробуйте снова.");
+                            System.out.println("Некорректные данные автомобиля. " +
+                                    "Пожалуйста, исправьте данные и попробуйте снова.");
                             return;
                         }
                     }
@@ -138,7 +140,7 @@ public class Main {
                         scanner.nextLine();
                     } catch (InputMismatchException e) {
                         System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
-                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        scanner.nextLine();
                         continue;
                     }
                     cars = manualService.fillManuallyCars(scanner, size);
@@ -146,7 +148,8 @@ public class Main {
                         if (CarValidator.isValid(car)) {
                             carStorage.add(car);
                         } else {
-                            System.out.println("Некорректные данные автомобиля. Пожалуйста, исправьте данные и попробуйте снова.");
+                            System.out.println("Некорректные данные автомобиля. " +
+                                    "Пожалуйста, исправьте данные и попробуйте снова.");
                             return;
                         }
                     }
@@ -180,25 +183,24 @@ public class Main {
         }
     }
 
-    private static void handleBookMenu(Scanner scanner, FileService fileService, RandomService randomService, ManualService manualService, SortService<Book> sortService, Storage<Book> bookStorage, SearchService<Book> bookSearchService) {
+    private static void handleBookMenu(Scanner scanner, FileService fileService, RandomService randomService,
+                                       ManualService manualService, SortService<Book> sortService,
+                                       Storage<Book> bookStorage, SearchService<Book> bookSearchService) {
         while (true) {
             System.out.println("Выберите действие для книг:");
             System.out.println("1. Заполнить массив из файла");
             System.out.println("2. Заполнить массив случайными данными");
             System.out.println("3. Заполнить массив вручную");
             System.out.println("4. Бинарный поиск по названию");
-            System.out.println("5. Сортировка по названию, автору и количеству страниц");
-            System.out.println("6. Сортировка по автору");
-            System.out.println("7. Сортировка по количеству страниц");
-            System.out.println("8. Вернуться в главное меню");
+            System.out.println("5. Вернуться в главное меню");
 
             int choice = 0;
             try {
                 choice = scanner.nextInt();
-                scanner.nextLine(); // Считываем оставшийся символ новой строки
+                scanner.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
-                scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                scanner.nextLine();
                 continue;
             }
 
@@ -211,7 +213,8 @@ public class Main {
                             bookStorage.add(book);
                             System.out.println("Добавлена книга: " + book.getTitle());
                         } else {
-                            System.out.println("Некорректные данные книги. Пожалуйста, исправьте данные и попробуйте снова.");
+                            System.out.println("Некорректные данные книги. " +
+                                    "Пожалуйста, исправьте данные и попробуйте снова.");
                             return;
                         }
                     }
@@ -229,7 +232,7 @@ public class Main {
                         }
                     } catch (InputMismatchException e) {
                         System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
-                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        scanner.nextLine();
                         continue;
                     } catch (IllegalArgumentException e) {
                         System.out.println("Ошибка: " + e.getMessage());
@@ -241,7 +244,8 @@ public class Main {
                             bookStorage.add(book);
                             System.out.println("Добавлена книга: " + book.getTitle());
                         } else {
-                            System.out.println("Некорректные данные книги. Пожалуйста, исправьте данные и попробуйте снова.");
+                            System.out.println("Некорректные данные книги. " +
+                                    "Пожалуйста, исправьте данные и попробуйте снова.");
                             return;
                         }
                     }
@@ -257,7 +261,7 @@ public class Main {
                         }
                     } catch (InputMismatchException e) {
                         System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
-                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        scanner.nextLine();
                         continue;
                     } catch (IllegalArgumentException e) {
                         System.out.println("Ошибка: " + e.getMessage());
@@ -268,7 +272,8 @@ public class Main {
                         if (BookValidator.isValid(book)) {
                             bookStorage.add(book);
                         } else {
-                            System.out.println("Некорректные данные книги. Пожалуйста, исправьте данные и попробуйте снова.");
+                            System.out.println("Некорректные данные книги. " +
+                                    "Пожалуйста, исправьте данные и попробуйте снова.");
                             return;
                         }
                     }
@@ -302,21 +307,25 @@ public class Main {
         }
     }
 
-    private static void handleRootVegetableMenu(Scanner scanner, FileService fileService, RandomService randomService, ManualService manualService, SortService<RootVegetable> sortService, Storage<RootVegetable> rootVegetableStorage, SearchService<RootVegetable> rootVegetableSearchService) {
+    private static void handleRootVegetableMenu(Scanner scanner, FileService fileService, RandomService randomService,
+                                                ManualService manualService, SortService<RootVegetable> sortService,
+                                                Storage<RootVegetable> rootVegetableStorage,
+                                                SearchService<RootVegetable> rootVegetableSearchService) {
         while (true) {
             System.out.println("Выберите действие для корнеплодов:");
             System.out.println("1. Заполнить массив из файла");
             System.out.println("2. Заполнить массив случайными данными");
             System.out.println("3. Заполнить массив вручную");
             System.out.println("4. Бинарный поиск по типу");
+            System.out.println("5. Вернуться в главное меню");
 
             int choice = 0;
             try {
                 choice = scanner.nextInt();
-                scanner.nextLine(); // Считываем оставшийся символ новой строки
+                scanner.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
-                scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                scanner.nextLine();
                 continue;
             }
 
@@ -347,7 +356,7 @@ public class Main {
                         }
                     } catch (InputMismatchException e) {
                         System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
-                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        scanner.nextLine();
                         continue;
                     } catch (IllegalArgumentException e) {
                         System.out.println("Ошибка: " + e.getMessage());
@@ -359,7 +368,8 @@ public class Main {
                             rootVegetableStorage.add(rootVegetable);
                             System.out.println("Добавлен корнеплод: " + rootVegetable.getType());
                         } else {
-                            System.out.println("Некорректные данные корнеплода. Пожалуйста, исправьте данные и попробуйте снова.");
+                            System.out.println("Некорректные данные корнеплода. " +
+                                    "Пожалуйста, исправьте данные и попробуйте снова.");
                             return;
                         }
                     }
@@ -375,7 +385,7 @@ public class Main {
                         }
                     } catch (InputMismatchException e) {
                         System.out.println("Ошибка: Введено некорректное значение. Пожалуйста, введите число.");
-                        scanner.nextLine(); // Считываем оставшийся ввод, чтобы избежать бесконечного цикла
+                        scanner.nextLine();
                         continue;
                     } catch (IllegalArgumentException e) {
                         System.out.println("Ошибка: " + e.getMessage());
@@ -386,7 +396,8 @@ public class Main {
                         if (RootVegetableValidator.isValid(rootVegetable)) {
                             rootVegetableStorage.add(rootVegetable);
                         } else {
-                            System.out.println("Некорректные данные корнеплода. Пожалуйста, исправьте данные и попробуйте снова.");
+                            System.out.println("Некорректные данные корнеплода. " +
+                                    "Пожалуйста, исправьте данные и попробуйте снова.");
                             return;
                         }
                     }
@@ -396,13 +407,16 @@ public class Main {
                         System.out.println("Идет выполнение бинарного поиска в массиве корнеплодов...");
                         System.out.print("Введите тип корнеплода для поиска: ");
                         String type = scanner.nextLine();
-                        RootVegetable[] rootVegetablesArray = rootVegetableStorage.getAll().toArray(new RootVegetable[0]);
+                        RootVegetable[] rootVegetablesArray = rootVegetableStorage.getAll()
+                                .toArray(new RootVegetable[0]);
 
                         sortService.sort(rootVegetablesArray, new RootVegetableTypeComparator());
 
-                        RootVegetable searchKey = new RootVegetable.Builder().setType(type).setWeight(0.1).setColor("Unknown").build();
+                        RootVegetable searchKey = new RootVegetable.Builder().setType(type)
+                                .setWeight(0.1).setColor("Unknown").build();
 
-                        int index = rootVegetableSearchService.search(rootVegetablesArray, searchKey, new RootVegetableTypeComparator());
+                        int index = rootVegetableSearchService.search(rootVegetablesArray, searchKey,
+                                new RootVegetableTypeComparator());
                         if (index != -1) {
                             System.out.println("Корнеплод найден на позиции: " + index);
                         } else {
