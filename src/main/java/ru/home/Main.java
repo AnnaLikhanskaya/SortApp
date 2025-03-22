@@ -2,9 +2,9 @@ package ru.home;
 
 import ru.home.model.Book;
 import ru.home.model.Car;
+import ru.home.model.RootVegetable;
 import ru.home.model.comparator.BookTitleComparator;
 import ru.home.model.comparator.CarModelComparator;
-import ru.home.model.RootVegetable;
 import ru.home.model.comparator.RootVegetableTypeComparator;
 import ru.home.service.*;
 import ru.home.service.impl.FileServiceImpl;
@@ -47,13 +47,16 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    handleCarMenu(scanner, fileService, randomService, manualService, carSortService, carStorage, carSearchService);
+                    handleCarMenu(scanner, fileService, randomService, manualService, carSortService,
+                            carStorage, carSearchService);
                     break;
                 case 2:
-                    handleBookMenu(scanner, fileService, randomService, manualService, bookSortService, bookStorage, bookSearchService);
+                    handleBookMenu(scanner, fileService, randomService, manualService, bookSortService,
+                            bookStorage, bookSearchService);
                     break;
                 case 3:
-                    handleRootVegetableMenu(scanner, fileService, randomService, manualService, rootVegetableSortService, rootVegetableStorage, rootVegetableSearchService);
+                    handleRootVegetableMenu(scanner, fileService, randomService, manualService,
+                            rootVegetableSortService, rootVegetableStorage, rootVegetableSearchService);
                     break;
                 case 4:
                     System.out.println("Выход из программы. До свидания!");
@@ -64,7 +67,9 @@ public class Main {
         }
     }
 
-    private static void handleCarMenu(Scanner scanner, FileService fileService, RandomService randomService, ManualService manualService, SortService<Car> sortService, Storage<Car> carStorage, SearchService<Car> carSearchService) {
+    private static void handleCarMenu(Scanner scanner, FileService fileService, RandomService randomService,
+                                      ManualService manualService, SortService<Car> sortService,
+                                      Storage<Car> carStorage, SearchService<Car> carSearchService) {
         while (true) {
             System.out.println("Выберите действие для автомобилей:");
             System.out.println("1. Заполнить массив из файла");
@@ -78,6 +83,7 @@ public class Main {
 
             switch (choice) {
                 case 1:
+                    // Заполнение из файла
                     System.out.println("Идет заполнение массива автомобилей из файла...");
                     Car[] cars = fileService.fillFromFileForCars("cars.txt");
                     for (Car car : cars) {
@@ -87,6 +93,7 @@ public class Main {
                     System.out.println("Данные из файла успешно загружены.");
                     break;
                 case 2:
+                    // Заполнение случайными данными
                     System.out.println("Идет заполнение массива автомобилей случайными данными...");
                     System.out.print("Введите количество автомобилей: ");
                     int size = scanner.nextInt();
@@ -98,6 +105,7 @@ public class Main {
                     }
                     break;
                 case 3:
+                    // Заполнение вручную
                     System.out.println("Идет заполнение массива автомобилей вручную...");
                     System.out.print("Введите количество автомобилей: ");
                     size = scanner.nextInt();
@@ -108,6 +116,7 @@ public class Main {
                     }
                     break;
                 case 4:
+                    // Бинарный поиск по модели
                     if (carStorage.getAll().size() > 0) {
                         System.out.println("Идет выполнение бинарного поиска в массиве автомобилей...");
                         System.out.print("Введите модель автомобиля для поиска: ");
@@ -182,6 +191,7 @@ public class Main {
                     }
                     break;
                 case 4:
+                    // Бинарный поиск по названию
                     if (bookStorage.getAll().size() > 0) {
                         System.out.println("Идет выполнение бинарного поиска в массиве книг...");
                         System.out.print("Введите название книги для поиска: ");
@@ -256,6 +266,7 @@ public class Main {
                     }
                     break;
                 case 4:
+                    // Бинарный поиск по типу
                     if (rootVegetableStorage.getAll().size() > 0) {
                         System.out.println("Идет выполнение бинарного поиска в массиве корнеплодов...");
                         System.out.print("Введите тип корнеплода для поиска: ");

@@ -40,20 +40,20 @@ public class RootVegetable implements Comparable<RootVegetable> {
         return Double.compare(this.weight, other.weight);
     }
 
-    public static class RootVegetableComparator implements Comparator<RootVegetable> {
-        @Override
-        public int compare(RootVegetable rv1, RootVegetable rv2) {
-            int typeComparison = rv1.getType().compareTo(rv2.getType());
-            if (typeComparison != 0) {
-                return typeComparison;
-            }
-            int colorComparison = rv1.getColor().compareTo(rv2.getColor());
-            if (colorComparison != 0) {
-                return colorComparison;
-            }
-            return Double.compare(rv1.getWeight(), rv2.getWeight());
-        }
-    }
+//    public static class RootVegetableComparator implements Comparator<RootVegetable> {
+//        @Override
+//        public int compare(RootVegetable rv1, RootVegetable rv2) {
+//            int typeComparison = rv1.getType().compareTo(rv2.getType());
+//            if (typeComparison != 0) {
+//                return typeComparison;
+//            }
+//            int colorComparison = rv1.getColor().compareTo(rv2.getColor());
+//            if (colorComparison != 0) {
+//                return colorComparison;
+//            }
+//            return Double.compare(rv1.getWeight(), rv2.getWeight());
+//        }
+//    }
 
     public static class Builder {
         private String type;
