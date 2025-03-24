@@ -16,7 +16,7 @@ public class RandomServiceImpl implements RandomService {
         for (int i = 0; i < size; i++) {
             int power = RANDOM.nextInt(100, 500);
             String model = "Model-" + RANDOM.nextInt(1000);
-            int year = 1886 + RANDOM.nextInt(2024 - 1886);
+            int year = 1900 + RANDOM.nextInt(2026 - 1900);
             Car car = new Car.Builder().setPower(power).setModel(model).setYear(year).build();
             cars[i] = car;
         }
