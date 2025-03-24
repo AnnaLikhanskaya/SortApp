@@ -285,9 +285,15 @@ public class Main {
                         String title = scanner.nextLine();
                         Book[] booksArray = bookStorage.getAll().toArray(new Book[0]);
 
+                        // Убедитесь, что массив отсортирован перед поиском
                         sortService.sort(booksArray, new BookTitleComparator());
 
-                        Book searchKey = new Book.Builder().setTitle(title).setAuthor("Unknown").setPages(1).build();
+                        // Создайте ключ поиска с допустимыми значениями для всех полей
+                        Book searchKey = new Book.Builder()
+                                .setTitle(title)
+                                .setAuthor("Unknown Author") // Фиктивное значение
+                                .setPages(1) // Фиктивное значение
+                                .build();
 
                         int index = bookSearchService.search(booksArray, searchKey, new BookTitleComparator());
                         if (index != -1) {
